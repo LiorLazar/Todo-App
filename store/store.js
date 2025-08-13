@@ -9,10 +9,13 @@ export const UPDATE_TODO = 'UPDATE_TODO'
 
 export const SET_FILTER_BY = 'SET_FILTER_BY'
 
+export const SET_USER = 'SET_USER'
+
 const initialStore = {
     todos: [],
     isLoading: true,
-    filterBy: {}
+    filterBy: {},
+    user: null
 }
 
 export function appReducer(state = initialStore, cmd = {}) {
@@ -36,6 +39,9 @@ export function appReducer(state = initialStore, cmd = {}) {
 
         case SET_FILTER_BY:
             return { ...state, filterBy: cmd.filterBy }
+
+        case SET_USER:
+            return { ...state, loggedinUser: cmd.loggedinUser }
         default:
             return state
     }
