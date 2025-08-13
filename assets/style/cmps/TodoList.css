@@ -11,5 +11,5 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    background-color: var(--clr1bg);
+    /* background-color: var(--clr1bg); */
 }
