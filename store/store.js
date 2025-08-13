@@ -17,6 +17,14 @@ export function appReducer(state = initialStore, cmd = {}) {
         case REMOVE_TODO:
             var todos = state.todos.filter(todo => todo._id !== cmd.todoId)
             return { ...state, todos }
+
+        case ADD_TODO:
+            var todos = state.todos.filter(todo => todo._id !== cmd.todoId)
+            return { ...state, todos: [...state.todos, cmd.todo] }
+
+        case UPDATE_TODO:
+            var todos = state.todos.map(todo => todo._id === cmd.todo._id ? cmd.todo : todo)
+            return { ...state, todos }
         default:
             return state
     }
