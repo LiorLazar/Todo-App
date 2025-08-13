@@ -1,16 +1,24 @@
 const { createStore } = Redux
 
+export const TOGGLE_IS_LOADING = 'TOGGLE_IS_LOADING'
+
 export const SET_TODOS = 'SET_TODOS'
 export const REMOVE_TODO = 'REMOVE_TODO'
 export const ADD_TODO = 'ADD_TODO'
 export const UPDATE_TODO = 'UPDATE_TODO'
 
+export const SET_FILTER_BY = 'SET_FILTER_BY'
+
 const initialStore = {
-    todos: []
+    todos: [],
+    isLoading: true,
+    filterBy: {}
 }
 
 export function appReducer(state = initialStore, cmd = {}) {
     switch (cmd.type) {
+        case TOGGLE_IS_LOADING:
+            return { ...state, isLoading: !state.isLoading }
         case SET_TODOS:
             return { ...state, todos: cmd.todos }
 
@@ -25,6 +33,9 @@ export function appReducer(state = initialStore, cmd = {}) {
         case UPDATE_TODO:
             var todos = state.todos.map(todo => todo._id === cmd.todo._id ? cmd.todo : todo)
             return { ...state, todos }
+
+        case SET_FILTER_BY:
+            return { ...state, filterBy: cmd.filterBy }
         default:
             return state
     }

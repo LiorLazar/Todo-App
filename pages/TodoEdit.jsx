@@ -4,7 +4,6 @@ import { saveTodo } from "../store/actions/todos.actions.js"
 
 const { useState, useEffect } = React
 const { useNavigate, useParams } = ReactRouterDOM
-const { useSelector, useDispatch } = ReactRedux
 
 
 export function TodoEdit() {

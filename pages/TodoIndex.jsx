@@ -10,29 +10,18 @@ const { useSelector, useDispatch } = ReactRedux
 const { Link, useSearchParams } = ReactRouterDOM
 
 export function TodoIndex() {
-    const todos = useSelector(state => state.todos)
-    // const dispatch = useDispatch()
-
     // Special hook for accessing search-params:
     const [searchParams, setSearchParams] = useSearchParams()
 
-    const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
+    const todos = useSelector(state => state.todos)
+    const filterBy = useSelector(state => state.filterBy)
 
-    const [filterBy, setFilterBy] = useState(defaultFilter)
 
     useEffect(() => {
-        loadTodos()
-    }, [])
-
-    // useEffect(() => {
-    //     setSearchParams(filterBy)
-    //     todoService.query(filterBy)
-    //         .then(todos => setTodos(todos))
-    //         .catch(err => {
-    //             console.eror('err:', err)
-    //             showErrorMsg('Cannot load todos')
-    //         })
-    // }, [filterBy])
+        // var filterBy = todoService.getFilterFromSearchParams(searchParams)
+        loadTodos(filterBy)
+        setSearchParams(filterBy)
+    }, [filterBy])
 
     function onRemoveTodo(todoId) {
         removeTodo(todoId)
@@ -59,7 +48,7 @@ export function TodoIndex() {
     if (!todos) return <div>Loading...</div>
     return (
         <section className="todo-index">
-            <TodoFilter filterBy={filterBy} onSetFilterBy={setFilterBy} />
+            <TodoFilter />
             <div>
                 <Link to="/todo/edit" className="btn" >Add Todo</Link>
             </div>
