@@ -46,7 +46,7 @@ export function TodoIndex() {
             })
     }
 
-    if (!todos) return <div>Loading...</div>
+    if (!todos || !todos.length) return <div>no todos to show..</div>
     return (
         <section className="todo-index">
             <TodoFilter />
