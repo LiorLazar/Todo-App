@@ -35,6 +35,26 @@ function query(filterBy = {}) {
             if (filterBy.status === 'Active')
                 todos = todos.filter(todo => !todo.isDone)
 
+            if (filterBy.sortBy && filterBy.sortBy.sortField) {
+                const { sortField, sortDir } = filterBy.sortBy
+                const dir = sortDir === 'desc' ? -1 : 1
+
+                todos.sort((a, b) => {
+                    if (sortField === 'txt') {
+                        return a.txt.localeCompare(b.txt) * dir
+                    } else if (sortField === 'importance') {
+                        return (a.importance - b.importance) * dir
+                    } else if (sortField === 'status') {
+                        // false < true, so Active before Done
+                        return ((a.isDone === b.isDone) ? 0 : a.isDone ? 1 : -1) * dir
+                    } else if (sortField === 'createdAt') {
+                        return (a.createdAt - b.createdAt) * dir
+                    } else if (sortField === 'updatedAt') {
+                        return (a.updatedAt - b.updatedAt) * dir
+                    }
+                    return 0
+                })
+            }
             return todos
         })
 }
@@ -68,7 +88,7 @@ function getEmptyTodo(txt = '', importance = 5) {
 }
 
 function getDefaultFilter() {
-    return { txt: '', importance: 0 }
+    return { txt: '', importance: 0, sortBy: {} }
 }
 
 function getFilterFromSearchParams(searchParams) {
