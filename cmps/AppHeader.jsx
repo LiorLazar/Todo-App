@@ -16,6 +16,7 @@ export function AppHeader() {
 
     function getDonePrecents() {
         var doneCount = todos.filter(todo => todo.isDone).length
+        if (!doneCount) return 0
         var precents = doneCount / todos.length
         return precents
     }
