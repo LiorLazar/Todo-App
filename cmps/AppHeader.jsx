@@ -26,13 +26,13 @@ export function AppHeader() {
                 <h1>React Todo App</h1>
                 <div className="progress-bar-container">
                     <progress className="progress-bar" value={getDonePrecents()}></progress>
-                    <span style={{ fontSize: '0.9em', marginTop: '4px' }}>
+                    <span>
                         {Math.round(getDonePrecents() * 100)}% completed
                     </span>
                 </div>
                 {loggedinUser ? (
                     < section >
-                        <Link to={`/user/${loggedinUser._id}`}>Hello {loggedinUser.fullname}</Link>
+                        <Link to={`/user/${loggedinUser._id}`}>Hello {loggedinUser.fullname}</Link> {loggedinUser.balance}
                         <button onClick={onLogout}>Logout</button>
                     </ section >
                 ) : (

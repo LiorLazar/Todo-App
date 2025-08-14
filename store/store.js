@@ -15,7 +15,7 @@ const initialStore = {
     todos: [],
     isLoading: true,
     filterBy: {},
-    user: null
+    loggedinUser: null
 }
 
 export function appReducer(state = initialStore, cmd = {}) {
