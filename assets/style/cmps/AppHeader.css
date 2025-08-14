@@ -1,7 +1,7 @@
 .app-header {
     background-color: var(--clr1);
     color: var(--clr2bg-light);
-    
+
 }
 
 .header-container {
@@ -25,6 +25,17 @@ a.active {
     font-weight: 600;
     text-decoration: underline;
 }
+
+.progress-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.progress-bar {
+    margin-right: 58px;
+}
+
 
 
 @media (max-width: 720px) {
