@@ -20,3 +20,11 @@ export function saveTodo(todoToSave) {
     return todoService.save(todoToSave)
         .then(savedTodo => store.dispatch({ type, todo: savedTodo }))
 }
+
+export function getDonePrecents() {
+    return todoService.query()
+        .then(todos => {
+            var doneList = todos.filter(todo => todo.isDone)
+            var precents = doneList.length * 100 / todos.length
+        })
+}

@@ -8,15 +8,23 @@ import { logout } from '../store/actions/user.actions.js'
 
 export function AppHeader() {
     const loggedinUser = useSelector(state => state.loggedinUser)
+    const todos = useSelector(state => state.todos)
 
     function onLogout() {
         logout()
+    }
+
+    function getDonePrecents() {
+        var doneCount = todos.filter(todo => todo.isDone).length
+        var precents = doneCount / todos.length
+        return precents
     }
 
     return (
         <header className="app-header full main-layout">
             <section className="header-container">
                 <h1>React Todo App</h1>
+                <progress className="progress-bar" value={getDonePrecents()}></progress>
                 {loggedinUser ? (
                     < section >
                         <Link to={`/user/${loggedinUser._id}`}>Hello {loggedinUser.fullname}</Link>
@@ -27,6 +35,7 @@ export function AppHeader() {
                         <LoginSignup />
                     </section>
                 )}
+
                 <nav className="app-nav">
                     <NavLink to="/" >Home</NavLink>
                     <NavLink to="/about" >About</NavLink>
