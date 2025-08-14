@@ -5,6 +5,8 @@ export function loadTodos(filterBy) {
     return todoService.query(filterBy)
         .then(todos => {
             store.dispatch({ type: SET_TODOS, todos })
+            store.dispatch({ type: TOGGLE_IS_LOADING, isLoading: false })
+
         })
 }
 
@@ -17,8 +19,4 @@ export function saveTodo(todoToSave) {
     const type = todoToSave._id ? UPDATE_TODO : ADD_TODO
     return todoService.save(todoToSave)
         .then(savedTodo => store.dispatch({ type, todo: savedTodo }))
-}
-
-export function toggleLoading() {
-    return store.dispatch({ type: TOGGLE_IS_LOADING })
 }

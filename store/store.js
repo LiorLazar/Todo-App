@@ -21,7 +21,7 @@ const initialStore = {
 export function appReducer(state = initialStore, cmd = {}) {
     switch (cmd.type) {
         case TOGGLE_IS_LOADING:
-            return { ...state, isLoading: !state.isLoading }
+            return { ...state, isLoading: cmd.isLoading }
         case SET_TODOS:
             return { ...state, todos: cmd.todos }
 
