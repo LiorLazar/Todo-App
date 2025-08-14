@@ -8,7 +8,6 @@ export function loadTodos(filterBy) {
         .then(todos => {
             store.dispatch({ type: SET_TODOS, todos })
             store.dispatch({ type: TOGGLE_IS_LOADING, isLoading: false })
-
         })
 }
 

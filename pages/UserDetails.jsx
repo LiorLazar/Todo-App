@@ -74,7 +74,7 @@ export function UserDetails() {
             <ul>
                 {sortedActivities.map(activity => (
                     <li key={activity.at}>
-                        o {getRelativeTime(activity.at)}: {activity.txt}: '{activity.taskName}'
+                        {getRelativeTime(activity.at)}: {activity.txt}: '{activity.taskName}'
                     </li>
                 ))}
             </ul>
