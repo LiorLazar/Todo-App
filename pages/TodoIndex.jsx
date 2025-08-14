@@ -21,7 +21,13 @@ export function TodoIndex() {
     useEffect(() => {
         // var filterBy = todoService.getFilterFromSearchParams(searchParams)
         loadTodos(filterBy)
-        setSearchParams(filterBy)
+        setSearchParams({
+            txt: filterBy.txt || '',
+            importance: filterBy.importance || '',
+            status: filterBy.status,
+            sortField: filterBy.sortBy ? filterBy.sortBy.sortField : '',
+            sortDir: filterBy.sortBy ? filterBy.sortBy.sortDir : 'asc'
+        })
     }, [filterBy])
 
     function onRemoveTodo(todoId) {

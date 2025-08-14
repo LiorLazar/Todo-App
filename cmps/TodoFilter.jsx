@@ -1,26 +1,28 @@
 import { SET_FILTER_BY } from "../store/store.js"
-import { utilService } from "../services/util.service.js"
 
 const { useSelector, useDispatch } = ReactRedux
-const { useState, useEffect, useRef } = React
+const { useState, useEffect } = React
+const { useSearchParams } = ReactRouterDOM
 
 export function TodoFilter() {
-
     const filterBy = useSelector(state => state.filterBy)
     const dispatch = useDispatch()
-    const [localTxt, setLocalTxt] = useState(filterBy.txt || "")
-    const [localImportance, setLocalImportance] = useState(filterBy.importance || "")
-    const [localStatus, setLocalStatus] = useState(filterBy.status || "")
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    // Local state for inputs
+    const [localTxt, setLocalTxt] = useState(searchParams.get('txt') || "")
+    const [localImportance, setLocalImportance] = useState(searchParams.get('importance') || "")
+    const [localStatus, setLocalStatus] = useState(searchParams.get('status') || "")
+    const [localSortField, setLocalSortField] = useState(searchParams.get('sortField') || "")
+    const [localSortDir, setLocalSortDir] = useState(searchParams.get('sortDir') || "asc")
 
     useEffect(() => {
-        setLocalTxt(filterBy.txt || "")
-        setLocalImportance(filterBy.importance || "")
-        setLocalStatus(filterBy.status || "")
-    }, [filterBy.txt, filterBy.importance, filterBy.status])
-
-    const debouncedDispatch = useRef(utilService.debounce((newFilterBy) => {
-        dispatch({ type: SET_FILTER_BY, filterBy: newFilterBy })
-    }, 300)).current
+        setLocalTxt(searchParams.get('txt') || "")
+        setLocalImportance(searchParams.get('importance') || "")
+        setLocalStatus(searchParams.get('status') || "")
+        setLocalSortField(searchParams.get('sortField') || "")
+        setLocalSortDir(searchParams.get('sortDir') || "asc")
+    }, [searchParams])
 
     function handleChange({ target }) {
         const field = target.name
@@ -36,25 +38,42 @@ export function TodoFilter() {
                 break
             default: break
         }
-        if (field === 'txt') {
-            setLocalTxt(value)
-            debouncedDispatch({ ...filterBy, txt: value, importance: localImportance, status: localStatus })
-        } else if (field === 'importance') {
-            setLocalImportance(value)
-            dispatch({ type: SET_FILTER_BY, filterBy: { ...filterBy, importance: value, txt: localTxt, status: localStatus } })
-        } else if (field === 'status') {
-            setLocalStatus(value)
-            dispatch({ type: SET_FILTER_BY, filterBy: { ...filterBy, status: value, txt: localTxt, importance: localImportance } })
+
+        // Update local state
+        if (field === 'txt') setLocalTxt(value)
+        else if (field === 'importance') setLocalImportance(value)
+        else if (field === 'status') setLocalStatus(value)
+        else if (field === 'sortField') setLocalSortField(value)
+        else if (field === 'sortDir') setLocalSortDir(value)
+
+        // Build new params
+        const newParams = {
+            txt: field === 'txt' ? value : localTxt,
+            importance: field === 'importance' ? value : localImportance,
+            status: field === 'status' ? value : localStatus,
+            sortField: field === 'sortField' ? value : localSortField,
+            sortDir: field === 'sortDir' ? value : localSortDir
         }
+        setSearchParams(newParams)
+        dispatch({
+            type: SET_FILTER_BY,
+            filterBy: {
+                txt: newParams.txt,
+                importance: newParams.importance,
+                status: newParams.status,
+                sortBy: {
+                    sortField: newParams.sortField,
+                    sortDir: newParams.sortDir
+                }
+            }
+        })
     }
 
-    // Optional support for LAZY Filtering with a button
     function onSubmitFilter(ev) {
         ev.preventDefault()
         dispatch({ type: SET_FILTER_BY, filterBy })
     }
 
-    const { txt = "", importance = "", status = "" } = filterBy
     return (
         <section className="todo-filter">
             <h2>Filter Todos</h2>
@@ -74,8 +93,22 @@ export function TodoFilter() {
                     <option value="Done">Done</option>
                 </select>
 
+                <label htmlFor="sortField">Sort By:</label>
+                <select name="sortField" id="sortField" value={localSortField} onChange={handleChange}>
+                    <option value="">None</option>
+                    <option value="txt">Text</option>
+                    <option value="importance">Importance</option>
+                    <option value="status">Status</option>
+                </select>
+
+                <label htmlFor="sortDir">Direction:</label>
+                <select name="sortDir" id="sortDir" value={localSortDir} onChange={handleChange}>
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+
                 <button hidden>Set Filter</button>
             </form>
-        </section >
+        </section>
     )
 }
