@@ -20,3 +20,8 @@ export function updateBalance(balance) {
     return userService.updateBalance(balance)
         .then(updatedBalance => store.dispatch({ type: SET_USER_BALANCE, balance: updatedBalance }))
 }
+
+export function updateActivities() {
+    const activities = store.getState().loggedinUser.activities
+    return userService.updateActivities(activities)
+}

@@ -11,6 +11,7 @@ export const SET_FILTER_BY = 'SET_FILTER_BY'
 
 export const SET_USER = 'SET_USER'
 export const SET_USER_BALANCE = 'SET_USER_BALANCE'
+export const ADD_USER_ACTIVITY = 'ADD_USER_ACTIVITY'
 
 const initialStore = {
     todos: [],
@@ -46,6 +47,9 @@ export function appReducer(state = initialStore, cmd = {}) {
 
         case SET_USER_BALANCE:
             return { ...state, loggedinUser: { ...state.loggedinUser, balance: cmd.balance } }
+
+        case ADD_USER_ACTIVITY:
+            return { ...state, loggedinUser: { ...state.loggedinUser, activities: [...state.loggedinUser.activities, cmd.activity] } }
         default:
             return state
     }

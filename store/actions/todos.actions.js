@@ -1,6 +1,7 @@
-import { todoService } from "../../services/todo.service.js";
-import { ADD_TODO, INCREASE_USER_BALANCE, REMOVE_TODO, SET_TODOS, store, TOGGLE_IS_LOADING, UPDATE_TODO } from "../store.js";
-import { updateBalance } from "./user.actions.js";
+import { todoService } from "../../services/todo.service.js"
+import { userService } from "../../services/user.service.js"
+import { ADD_TODO, ADD_USER_ACTIVITY, REMOVE_TODO, SET_TODOS, store, TOGGLE_IS_LOADING, UPDATE_TODO } from "../store.js"
+import { updateActivities, updateBalance } from "./user.actions.js"
 
 export function loadTodos(filterBy) {
     return todoService.query(filterBy)
@@ -12,15 +13,42 @@ export function loadTodos(filterBy) {
 }
 
 export function removeTodo(todoId) {
-    return todoService.remove(todoId)
-        .then(() => { store.dispatch({ type: REMOVE_TODO, todoId }) })
+    return todoService.get(todoId)
+        .then(todo => {
+            return todoService.remove(todoId)
+                .then(() => {
+                    store.dispatch({ type: REMOVE_TODO, todoId })
+                    store.dispatch({ type: ADD_USER_ACTIVITY, activity: { txt: 'Removed the Todo', at: Date.now(), taskName: todo.txt } })
+                    updateActivities()
+                })
+        })
 }
 
 export function saveTodo(todoToSave) {
     const type = todoToSave._id ? UPDATE_TODO : ADD_TODO
-    if (type === UPDATE_TODO && todoToSave.isDone) updateBalance(10)
     return todoService.save(todoToSave)
-        .then(savedTodo => store.dispatch({ type, todo: savedTodo }))
+        .then(savedTodo => {
+            store.dispatch({ type, todo: savedTodo })
+            let activityPromise = Promise.resolve()
+            if (type === UPDATE_TODO && savedTodo.isDone) {
+                updateBalance(10)
+                activityPromise = todoService.get(savedTodo._id)
+                    .then(todo => {
+                        store.dispatch({ type: ADD_USER_ACTIVITY, activity: { txt: 'Marked Todo as Done', at: Date.now(), taskName: todo.txt } })
+                        updateActivities()
+                    })
+            } else if (type === UPDATE_TODO) {
+                activityPromise = todoService.get(savedTodo._id)
+                    .then(todo => store.dispatch({ type: ADD_USER_ACTIVITY, activity: { txt: 'Updated a Todo', at: Date.now(), taskName: todo.txt } }))
+            } else if (type === ADD_TODO) {
+                activityPromise = todoService.get(savedTodo._id)
+                    .then(todo => {
+                        store.dispatch({ type: ADD_USER_ACTIVITY, activity: { txt: 'Added a Todo', at: Date.now(), taskName: todo.txt } })
+                        updateActivities()
+                    })
+            }
+            return activityPromise.then(() => ({ todo: savedTodo }))
+        })
 }
 
 export function getDonePrecents() {
