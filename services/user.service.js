@@ -8,8 +8,10 @@ export const userService = {
     signup,
     getById,
     query,
-    getEmptyCredentials
+    getEmptyCredentials,
+    updateBalance
 }
+
 const STORAGE_KEY_LOGGEDIN = 'user'
 const STORAGE_KEY = 'userDB'
 
@@ -60,6 +62,19 @@ function getEmptyCredentials() {
         password: 'muki1',
         balance: 100
     }
+}
+
+function updateBalance(diff) {
+    return userService.getById(getLoggedinUser()._id)
+        .then(user => {
+            if (user.balance + diff < 0) return Promise.reject('Negative Balance')
+            user.balance += diff
+            return storageService.put(STORAGE_KEY, user)
+                .then(user => {
+                    _setLoggedinUser(user)
+                    return user.balance
+                })
+        })
 }
 
 // signup({username: 'muki', password: 'muki1', fullname: 'Muki Ja'})
