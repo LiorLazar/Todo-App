@@ -1,10 +1,14 @@
 import { TodoPreview } from "./TodoPreview.jsx"
 const { Link } = ReactRouterDOM
 
-export function TodoList({ todos, onRemoveTodo, onToggleTodo }) {
+const { useSelector, useDispatch } = ReactRedux
+
+export function TodoList({ onRemoveTodo, onToggleTodo }) {
+    const todos = useSelector(state => state.todos)
 
     return (
         <ul className="todo-list">
+            {!todos.length && <div>No Todos to show...</div>}
             {todos.map(todo =>
                 <li key={todo._id}>
                     <TodoPreview todo={todo} onToggleTodo={() => onToggleTodo(todo)} />

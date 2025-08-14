@@ -4,7 +4,6 @@ import { DataTable } from "../cmps/data-table/DataTable.jsx"
 import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { loadTodos, removeTodo } from "../store/actions/todos.actions.js"
-import { utilService } from "../services/util.service.js"
 
 const { useState, useEffect } = React
 const { useSelector, useDispatch } = ReactRedux
@@ -16,11 +15,12 @@ export function TodoIndex() {
 
     const todos = useSelector(state => state.todos)
     const filterBy = useSelector(state => state.filterBy)
+    const isLoading = useSelector(state => state.isLoading)
 
 
     useEffect(() => {
         // var filterBy = todoService.getFilterFromSearchParams(searchParams)
-       loadTodos(filterBy)
+        loadTodos(filterBy)
         setSearchParams(filterBy)
     }, [filterBy])
 
@@ -48,7 +48,8 @@ export function TodoIndex() {
     }
 
     if (!todos) return <div>no todos to show..</div>
-    
+    if (isLoading) return <div>Loading...</div>
+
     return (
         <section className="todo-index">
             <TodoFilter />
