@@ -24,7 +24,12 @@ export function AppHeader() {
         <header className="app-header full main-layout">
             <section className="header-container">
                 <h1>React Todo App</h1>
-                <progress className="progress-bar" value={getDonePrecents()}></progress>
+                <div className="progress-bar-container">
+                    <progress className="progress-bar" value={getDonePrecents()}></progress>
+                    <span style={{ fontSize: '0.9em', marginTop: '4px' }}>
+                        {Math.round(getDonePrecents() * 100)}% completed
+                    </span>
+                </div>
                 {loggedinUser ? (
                     < section >
                         <Link to={`/user/${loggedinUser._id}`}>Hello {loggedinUser.fullname}</Link>
