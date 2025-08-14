@@ -121,8 +121,6 @@ export function TodoFilter() {
                     <option value="asc">Ascending</option>
                     <option value="desc">Descending</option>
                 </select>
-
-                <button hidden>Set Filter</button>
             </form>
         </section>
     )
