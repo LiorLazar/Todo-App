@@ -30,6 +30,11 @@ a.active {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
+    >span {
+        font-size: 0.9em;
+        margin-top: 4px;
+    }
 }
 
 .progress-bar {

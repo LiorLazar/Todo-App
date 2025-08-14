@@ -10,12 +10,13 @@ export const UPDATE_TODO = 'UPDATE_TODO'
 export const SET_FILTER_BY = 'SET_FILTER_BY'
 
 export const SET_USER = 'SET_USER'
+export const SET_USER_BALANCE = 'SET_USER_BALANCE'
 
 const initialStore = {
     todos: [],
     isLoading: true,
     filterBy: {},
-    user: null
+    loggedinUser: null
 }
 
 export function appReducer(state = initialStore, cmd = {}) {
@@ -42,6 +43,9 @@ export function appReducer(state = initialStore, cmd = {}) {
 
         case SET_USER:
             return { ...state, loggedinUser: cmd.loggedinUser }
+
+        case SET_USER_BALANCE:
+            return { ...state, loggedinUser: { ...state.loggedinUser, balance: cmd.balance } }
         default:
             return state
     }
