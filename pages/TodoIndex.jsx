@@ -99,7 +99,7 @@ export function TodoIndex() {
             </div>
             <hr />
             <h2>Todos Table</h2>
-            <div style={{ width: '60%', margin: 'auto' }}>
+            <div className="data-table-container">
                 <DataTable todos={todos} onRemoveTodo={onRemoveTodo} />
             </div>
         </section>
