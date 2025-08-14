@@ -9,14 +9,20 @@ const { useState, useEffect } = React
 const { useSelector, useDispatch } = ReactRedux
 const { Link, useSearchParams } = ReactRouterDOM
 
+import { SET_FILTER_BY } from "../store/store.js"
+
+
 export function TodoIndex() {
     // Special hook for accessing search-params:
     const [searchParams, setSearchParams] = useSearchParams()
+    const dispatch = useDispatch()
 
     const todos = useSelector(state => state.todos)
     const filterBy = useSelector(state => state.filterBy)
     const isLoading = useSelector(state => state.isLoading)
 
+    // Calculate total pages based on filterBy and PAGE_SIZE
+    const [totalPages, setTotalPages] = useState(1)
 
     useEffect(() => {
         // var filterBy = todoService.getFilterFromSearchParams(searchParams)
@@ -26,9 +32,21 @@ export function TodoIndex() {
             importance: filterBy.importance || '',
             status: filterBy.status,
             sortField: filterBy.sortBy ? filterBy.sortBy.sortField : '',
-            sortDir: filterBy.sortBy ? filterBy.sortBy.sortDir : 'asc'
+            sortDir: filterBy.sortBy ? filterBy.sortBy.sortDir : 'asc',
+            pageIdx: filterBy.pageIdx !== undefined ? filterBy.pageIdx : 0
         })
     }, [filterBy])
+
+    useEffect(() => {
+        // Get total todos count for current filter (without pagination)
+        todoService.query({
+            ...filterBy,
+            pageIdx: undefined // ignore pagination for count
+        }).then(filteredTodos => {
+            const PAGE_SIZE = 3
+            setTotalPages(Math.max(1, Math.ceil(filteredTodos.length / PAGE_SIZE)))
+        })
+    }, [filterBy.txt, filterBy.importance, filterBy.status, filterBy.sortBy])
 
     function onRemoveTodo(todoId) {
         confirm('Are you sure you want to remove this todo?')
@@ -44,13 +62,23 @@ export function TodoIndex() {
         const todoToSave = { ...todo, isDone: !todo.isDone }
         todoService.save(todoToSave)
             .then((savedTodo) => {
-                // setTodos(prevTodos => prevTodos.map(currTodo => (currTodo._id !== todo._id) ? currTodo : { ...savedTodo }))
                 showSuccessMsg(`Todo is ${(savedTodo.isDone) ? 'done' : 'back on your list'}`)
             })
             .catch(err => {
                 console.log('err:', err)
                 showErrorMsg('Cannot toggle todo ' + todoId)
             })
+    }
+
+    function onChangePage(diff) {
+        if (filterBy.pageIdx === undefined) return
+        let nextPageIdx = filterBy.pageIdx + diff
+        if (nextPageIdx < 0) nextPageIdx = 0
+        if (nextPageIdx > totalPages - 1) nextPageIdx = totalPages - 1
+        dispatch({
+            type: SET_FILTER_BY,
+            filterBy: { ...filterBy, pageIdx: nextPageIdx }
+        })
     }
 
     if (!todos) return <div>no todos to show..</div>
@@ -64,6 +92,11 @@ export function TodoIndex() {
             </div>
             <h2>Todos List</h2>
             <TodoList todos={todos} onRemoveTodo={onRemoveTodo} onToggleTodo={onToggleTodo} />
+            <div style={{ margin: '20px 0', textAlign: 'center' }}>
+                <button onClick={() => onChangePage(-1)} disabled={filterBy.pageIdx === 0}>Prev</button>
+                <span style={{ margin: '0 10px' }}>Page {filterBy.pageIdx + 1} of {totalPages}</span>
+                <button onClick={() => onChangePage(1)} disabled={filterBy.pageIdx >= totalPages - 1}>Next</button>
+            </div>
             <hr />
             <h2>Todos Table</h2>
             <div style={{ width: '60%', margin: 'auto' }}>

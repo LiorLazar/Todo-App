@@ -50,9 +50,10 @@ export function TodoFilter() {
         const newParams = {
             txt: field === 'txt' ? value : localTxt,
             importance: field === 'importance' ? value : localImportance,
-            status: field === 'status' ? value : localStatus,
+            status: (field === 'status' ? value : localStatus) || '',
             sortField: field === 'sortField' ? value : localSortField,
-            sortDir: field === 'sortDir' ? value : localSortDir
+            sortDir: field === 'sortDir' ? value : localSortDir,
+            pageIdx: 0 // Reset to first page on filter/sort change
         }
         setSearchParams(newParams)
         dispatch({
@@ -60,18 +61,32 @@ export function TodoFilter() {
             filterBy: {
                 txt: newParams.txt,
                 importance: newParams.importance,
-                status: newParams.status,
+                status: newParams.status || '',
                 sortBy: {
                     sortField: newParams.sortField,
                     sortDir: newParams.sortDir
-                }
+                },
+                pageIdx: 0
             }
         })
     }
 
     function onSubmitFilter(ev) {
         ev.preventDefault()
-        dispatch({ type: SET_FILTER_BY, filterBy })
+        // Always include status, even if empty
+        dispatch({
+            type: SET_FILTER_BY,
+            filterBy: {
+                txt: localTxt,
+                importance: localImportance,
+                status: localStatus || '',
+                sortBy: {
+                    sortField: localSortField,
+                    sortDir: localSortDir
+                },
+                pageIdx: 0
+            }
+        })
     }
 
     return (

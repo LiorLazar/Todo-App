@@ -2,6 +2,8 @@ import { utilService } from './util.service.js'
 import { storageService } from './async-storage.service.js'
 
 const TODO_KEY = 'todoDB'
+const PAGE_SIZE = 3
+
 _createTodos()
 
 export const todoService = {
@@ -55,6 +57,11 @@ function query(filterBy = {}) {
                     return 0
                 })
             }
+
+            if (filterBy.pageIdx !== undefined && filterBy.pageIdx !== null) {
+                const startIdx = filterBy.pageIdx * PAGE_SIZE
+                todos = todos.slice(startIdx, startIdx + PAGE_SIZE)
+            }
             return todos
         })
 }
@@ -88,14 +95,19 @@ function getEmptyTodo(txt = '', importance = 5) {
 }
 
 function getDefaultFilter() {
-    return { txt: '', importance: 0, sortBy: {} }
+    return { txt: '', importance: 0, status: '', sortBy: {}, pageIdx: 0 }
 }
 
 function getFilterFromSearchParams(searchParams) {
     const defaultFilter = getDefaultFilter()
     const filterBy = {}
     for (const field in defaultFilter) {
-        filterBy[field] = searchParams.get(field) || ''
+        if (field === 'pageIdx') {
+            const val = searchParams.get(field)
+            filterBy[field] = val !== null ? +val : 0
+        } else {
+            filterBy[field] = searchParams.get(field) || ''
+        }
     }
     return filterBy
 }
