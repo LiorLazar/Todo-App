@@ -25,3 +25,9 @@ export function updateActivities() {
     const activities = store.getState().loggedinUser.activities
     return userService.updateActivities(activities)
 }
+
+export function updateUser() {
+    const user = store.getState().loggedinUser
+    return userService.updateUser(user)
+        .then(updatedUser => store.dispatch({ type: SET_USER, loggedinUser: updatedUser }))
+}
