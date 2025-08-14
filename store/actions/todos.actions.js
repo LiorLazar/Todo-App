@@ -1,5 +1,4 @@
 import { todoService } from "../../services/todo.service.js"
-import { userService } from "../../services/user.service.js"
 import { ADD_TODO, ADD_USER_ACTIVITY, REMOVE_TODO, SET_TODOS, store, TOGGLE_IS_LOADING, UPDATE_TODO } from "../store.js"
 import { updateActivities, updateBalance } from "./user.actions.js"
 
@@ -47,14 +46,5 @@ export function saveTodo(todoToSave) {
                     })
             }
             return activityPromise.then(() => ({ todo: savedTodo }))
-        })
-}
-
-export function getDonePrecents() {
-    return todoService.query()
-        .then(todos => {
-            var doneList = todos.filter(todo => todo.isDone)
-            var precents = doneList.length * 100 / todos.length
-            return precents
         })
 }
