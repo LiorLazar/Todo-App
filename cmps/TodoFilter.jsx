@@ -33,7 +33,7 @@ export function TodoFilter() {
         dispatch({ type: SET_FILTER_BY, filterBy })
     }
 
-    const { txt = "", importance = "" } = filterBy
+    const { txt = "", importance = "", status = "" } = filterBy
     return (
         <section className="todo-filter">
             <h2>Filter Todos</h2>
@@ -46,8 +46,15 @@ export function TodoFilter() {
                     type="number" placeholder="By Importance" id="importance" name="importance"
                 />
 
+                <label htmlFor="status">Status:</label>
+                <select name="status" id="status" value={status || ''} onChange={handleChange}>
+                    <option value=''>All</option>
+                    <option value="Active">Active</option>
+                    <option value="Done">Done</option>
+                </select>
+
                 <button hidden>Set Filter</button>
             </form>
-        </section>
+        </section >
     )
 }
