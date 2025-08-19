@@ -1,5 +1,6 @@
 import { todoService } from "../../services/todo.service.js"
-import { ADD_TODO, ADD_USER_ACTIVITY, REMOVE_TODO, SET_TODOS, store, TOGGLE_IS_LOADING, UPDATE_TODO } from "../store.js"
+import { ADD_TODO, REMOVE_TODO, SET_TODOS, UPDATE_TODO } from "../reducers/todo.reducer.js"
+import { ADD_USER_ACTIVITY, TOGGLE_IS_LOADING } from "../reducers/user.reducer.js"
 import { updateActivities, updateBalance } from "./user.actions.js"
 
 export function loadTodos(filterBy) {
