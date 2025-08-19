@@ -1,10 +1,10 @@
-import { TodoFilter } from "../public/cmps/TodoFilter.jsx"
-import { TodoList } from "../public/cmps/TodoList.jsx"
-import { DataTable } from "../public/cmps/data-table/DataTable.jsx"
-import { todoService } from "../public/services/todo.service.js"
-import { showErrorMsg, showSuccessMsg } from "../public/services/event-bus.service.js"
-import { loadTodos, removeTodo } from "../public/store/actions/todos.actions.js"
-import { SET_FILTER_BY } from "../public/store/reducers/todo.reducer.js"
+import { TodoFilter } from "../cmps/TodoFilter.jsx"
+import { TodoList } from "../cmps/TodoList.jsx"
+import { DataTable } from "../cmps/data-table/DataTable.jsx"
+import { todoService } from "../services/todo.service.js"
+import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
+import { loadTodos, removeTodo } from "../store/actions/todos.actions.js"
+import { SET_FILTER_BY } from "../store/reducers/todo.reducer.js"
 
 const { useState, useEffect } = React
 const { useSelector, useDispatch } = ReactRedux
