@@ -16,9 +16,9 @@ export function TodoIndex() {
     const [searchParams, setSearchParams] = useSearchParams()
     const dispatch = useDispatch()
 
-    const todos = useSelector(state => state.todosModules.todos)
-    const filterBy = useSelector(state => state.todosModules.filterBy)
-    const isLoading = useSelector(state => state.userModules.isLoading)
+    const todos = useSelector(state => state.todosModule.todos)
+    const filterBy = useSelector(state => state.todosModule.filterBy)
+    const isLoading = useSelector(state => state.userModule.isLoading)
 
     // Calculate total pages based on filterBy and PAGE_SIZE
     const [totalPages, setTotalPages] = useState(1)
