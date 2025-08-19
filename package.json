@@ -1,0 +1,25 @@
+{
+  "name": "todo-app",
+  "version": "1.0.0",
+  "description": "Todos Management App",
+  "homepage": "https://github.com/LiorLazar/Todo-App#readme",
+  "bugs": {
+    "url": "https://github.com/LiorLazar/Todo-App/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiorLazar/Todo-App.git"
+  },
+  "license": "ISC",
+  "author": "Lior Lazar",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon --ignore \"./data\" server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^5.1.0"
+  }
+}

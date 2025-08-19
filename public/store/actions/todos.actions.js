@@ -1,4 +1,4 @@
-import { todoService } from "../../public/services/todo.service.js"
+import { todoService } from "../../services/todo.service.js"
 import { ADD_TODO, REMOVE_TODO, SET_TODOS, UPDATE_TODO } from "../reducers/todo.reducer.js"
 import { ADD_USER_ACTIVITY, TOGGLE_IS_LOADING } from "../reducers/user.reducer.js"
 import { updateActivities, updateBalance } from "./user.actions.js"

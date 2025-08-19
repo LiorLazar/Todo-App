@@ -1,6 +1,6 @@
-import { showSuccessMsg } from "../public/services/event-bus.service.js"
-import { updateUser } from "../public/store/actions/user.actions.js"
-import { SET_USER } from "../public/store/store.js"
+import { showSuccessMsg } from "../services/event-bus.service.js"
+import { updateUser } from "../store/actions/user.actions.js"
+import { SET_USER } from "../store/store.js"
 
 const { useSelector, useDispatch } = ReactRedux
 
