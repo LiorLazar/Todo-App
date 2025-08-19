@@ -7,8 +7,8 @@ import { logout } from '../store/actions/user.actions.js'
 
 
 export function AppHeader() {
-    const loggedinUser = useSelector(state => state.loggedinUser)
-    const todos = useSelector(state => state.todos)
+    const loggedinUser = useSelector(state => state.userModule.loggedinUser)
+    const todos = useSelector(state => state.todoModule.todos)
 
     function onLogout() {
         logout()

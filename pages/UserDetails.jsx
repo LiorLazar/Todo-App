@@ -6,7 +6,7 @@ const { useSelector, useDispatch } = ReactRedux
 
 export function UserDetails() {
     const dispatch = useDispatch()
-    const loggedinUser = useSelector(state => state.loggedinUser)
+    const loggedinUser = useSelector(state => state.userModules.loggedinUser)
 
     if (!loggedinUser) return <div>Please log in to view your profile.</div>
 

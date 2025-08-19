@@ -4,7 +4,7 @@ const { Link } = ReactRouterDOM
 const { useSelector, useDispatch } = ReactRedux
 
 export function TodoList({ onRemoveTodo, onToggleTodo }) {
-    const todos = useSelector(state => state.todos)
+    const todos = useSelector(state => state.todosModule.todos)
 
     return (
         <ul className="todo-list">
