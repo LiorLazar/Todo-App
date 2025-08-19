@@ -25,13 +25,15 @@ export function TodoIndex() {
 
     useEffect(() => {
         // var filterBy = todoService.getFilterFromSearchParams(searchParams)
-        loadTodos(filterBy)
+        loadTodos(filterBy).catch(() => {
+            showErrorMsg('Cannot load todos')
+        })
         setSearchParams({
             txt: filterBy.txt || '',
             importance: filterBy.importance || '',
-            status: filterBy.status,
-            sortField: filterBy.sortBy ? filterBy.sortBy.sortField : '',
-            sortDir: filterBy.sortBy ? filterBy.sortBy.sortDir : 'asc',
+            status: filterBy.status || '',
+            sortField: (filterBy.sortBy && filterBy.sortBy.sortField) ? filterBy.sortBy.sortField : '',
+            sortDir: (filterBy.sortBy && filterBy.sortBy.sortDir) ? filterBy.sortBy.sortDir : 'asc',
             pageIdx: filterBy.pageIdx !== undefined ? filterBy.pageIdx : 0
         })
     }, [filterBy])
