@@ -1,11 +1,11 @@
-import { SET_FILTER_BY } from "../store/store.js"
+import { SET_FILTER_BY } from "../store/reducers/todo.reducer.js"
 
 const { useSelector, useDispatch } = ReactRedux
 const { useState, useEffect } = React
 const { useSearchParams } = ReactRouterDOM
 
 export function TodoFilter() {
-    const filterBy = useSelector(state => state.filterBy)
+    const filterBy = useSelector(state => state.todosModule.filterBy)
     const dispatch = useDispatch()
     const [searchParams, setSearchParams] = useSearchParams()
 

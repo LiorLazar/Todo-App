@@ -4,12 +4,11 @@ import { DataTable } from "../cmps/data-table/DataTable.jsx"
 import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { loadTodos, removeTodo } from "../store/actions/todos.actions.js"
+import { SET_FILTER_BY } from "../store/reducers/todo.reducer.js"
 
 const { useState, useEffect } = React
 const { useSelector, useDispatch } = ReactRedux
 const { Link, useSearchParams } = ReactRouterDOM
-
-import { SET_FILTER_BY } from "../store/store.js"
 
 
 export function TodoIndex() {
@@ -17,9 +16,9 @@ export function TodoIndex() {
     const [searchParams, setSearchParams] = useSearchParams()
     const dispatch = useDispatch()
 
-    const todos = useSelector(state => state.todos)
-    const filterBy = useSelector(state => state.filterBy)
-    const isLoading = useSelector(state => state.isLoading)
+    const todos = useSelector(state => state.todosModules.todos)
+    const filterBy = useSelector(state => state.todosModules.filterBy)
+    const isLoading = useSelector(state => state.userModules.isLoading)
 
     // Calculate total pages based on filterBy and PAGE_SIZE
     const [totalPages, setTotalPages] = useState(1)
